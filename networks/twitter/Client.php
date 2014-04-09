@@ -6,6 +6,7 @@ use \jlorente\social\networks\AbstractClient;
 use \jlorente\social\networks\AbstractPublication;
 use \jlorente\social\exceptions\AuthorizationRequestException;
 use \jlorente\social\exceptions\InvalidCredentialsException;
+use \jlorente\social\config\Config;
 
 /**
  * Class wrapper for Twitter codebird class that provides interface for 
@@ -27,7 +28,17 @@ class Client extends AbstractClient {
      * @var Codebird\Codebird
      */
     protected $tClient;
+    
+    /**
+     *
+     * @var type 
+     */
     protected $apiExceptionFactory;
+    
+    /**
+     *
+     * @var type 
+     */
     protected static $kSupportedKeys = array(
         'request_token' => 1,
         'request_token_secret' => 1,
@@ -51,7 +62,8 @@ class Client extends AbstractClient {
     public function __construct() {
         $this->tClient = new Codebird();
         $this->tClient->setConsumerKey(
-                TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET
+                Config::getInstance()->twitter->appId, 
+                Config::getInstance()->twitter->appSecret
         );
         $this->apiExceptionFactory = new ApiExceptionFactory;
     }

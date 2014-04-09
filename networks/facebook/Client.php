@@ -5,6 +5,7 @@ use \jlorente\social\networks\AbstractClient;
 use \jlorente\social\networks\AbstractPublication;
 use \jlorente\social\exceptions\AuthorizationRequestException,
     \jlorente\social\exceptions\InvalidCredentialsException;
+use \jlorente\social\config\Config;
 use \Facebook,
     \FacebookApiException;
 
@@ -31,8 +32,8 @@ class Client extends AbstractClient {
 
     public function __construct() {
         $this->fClient = new Facebook([
-            'appId' => FB_APP_ID,
-            'secret' => FB_APP_SECRET
+            'appId' => Config::getInstance()->facebook->appId,
+            'secret' => Config::getInstance()->facebook->appSecret
         ]);
 
         $this->apiExceptionFactory = new ApiExceptionFactory;
@@ -42,7 +43,7 @@ class Client extends AbstractClient {
      * @see jlorente\social\networks\AbstractClient::authorizationRequest()
      */
     public function authorizationRequest($callback = null) {
-        $params = ['scope' => 'email, user_birthday, publish_actions'];
+        $params = Config::getInstance()->facebook->scope;
         if ($callback !== null) {
             $params['redirect_uri'] = $callback;
         }
